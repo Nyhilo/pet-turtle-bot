@@ -5,12 +5,12 @@ import sys
 
 NAME = 'Bok Choy'
 
+
 with open("token",'r') as f:
     TOKEN = f.read()
 
 with open("ascii_sprite",'r') as f:
     SPRITE = "".join(f.readlines())
-    print(SPRITE)
 
 
 def main():
@@ -19,18 +19,20 @@ def main():
 
     @bot.event
     async def on_ready():
+        print("Python version", sys.version)
+        print(SPRITE[3:-3])
         print('Logged in as', bot.user.name)
         print("Discord API version: " + discord.__version__)
 
+    msg = ""
+
     @bot.command()
     async def hello():
-        """Description of command goes here"""
-        await bot.say('Hi! My name is ' + NAME)
+        msg = await bot.say('Hi! My name is ' + NAME)
 
-    @bot.command(pass_context=True)
-    async def revise(ctx):
-        """"""
-        await bot.edit_message('Hi! My name is not' + NAME)
+    @bot.command(msg)
+    async def revise():
+        await bot.edit_message(msg,'Hi! This message has been edited')
 
     @bot.command()
     async def turtle():
