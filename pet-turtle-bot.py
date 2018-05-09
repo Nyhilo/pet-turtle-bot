@@ -4,6 +4,7 @@ from discord.ext import commands
 import sys
 import time
 from datetime import datetime
+from random import choice
 
 # Vars #
 with open("token",'r') as f:
@@ -13,8 +14,14 @@ with open("token",'r') as f:
 with open("ascii_sprite",'r') as f:
     SPRITES = "".join(f.readlines()).split('$')
 
+# Possible responses by category
+responses = {
+    'happy': ["{} nudges a stone with their snout."]
+}
 
 # Misc Functions #
+def chooseResponse(category):
+    pass
 
 
 # Pet Class #
@@ -36,14 +43,15 @@ class Pet(object):
         self.growthrate = 1
 
     def msg(self, string):
-        return "*" + string + "*"
+        # {} in the string will be replaced with the pet's name
+        return "*" + string.format(self.name) + "*"
 
     def logic(self):
         pass
 
     def feed(self, amount=1):
         if self.hunger/self.maxstat < .2:
-            msg = ""
+            msg = "{} looks"
         self.hunger +=30
 
     def getStatBar(self, value):
@@ -68,7 +76,7 @@ class Pet(object):
 
     def format(self):
         outstring = self.sprite[self.growth]
-        outstring += "\n Name: " + self.name + "    Status: " + self.status + "    Age: " + self.calculateAge()
+        outstring += "\n\n Name: " + self.name + "    Status: " + self.status + "    Age: " + self.calculateAge()
         outstring += "\n HAP [" + self.getStatBar(self.happiness) + "]    HUNG [" + self.getStatBar(self.hunger) + "]"
         outstring += "\n SLP [" + self.getStatBar(self.health)    + "]    HLTH [" + self.getStatBar(self.hunger) + "]"
         return outstring
