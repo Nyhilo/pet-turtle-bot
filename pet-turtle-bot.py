@@ -1,3 +1,9 @@
+# TODO List
+# * Add gender to pet, format this throughout bot responses
+# * Add more age-related sprites
+# * Other things
+
+
 #pet-turtle-bot
 import discord
 from discord.ext import commands
@@ -16,7 +22,8 @@ with open("ascii_sprite",'r') as f:
 
 # Possible responses by category
 responses = {
-    'happy': ["{} nudges a stone with their snout."]
+    'happy': ["{} nudges a stone with his snout."],
+
 }
 
 # Misc Functions #
@@ -51,7 +58,7 @@ class Pet(object):
 
     def feed(self, amount=1):
         if self.hunger/self.maxstat < .2:
-            msg = "{} looks"
+            msg = "{} looks so relieved. He was almost starving!"
         self.hunger +=30
 
     def getStatBar(self, value):
