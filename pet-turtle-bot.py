@@ -19,9 +19,6 @@ from random import choice
 # Vars #
 UPDATE = 15  # Time between updates in minutes
 
-with open("token", 'r') as f:
-    TOKEN = f.read()
-
 # Sprite file can contain multiple ascii art sprites, each seperated by a $
 with open("ascii_sprite", 'r') as f:
     SPRITES = "".join(f.readlines()).split('$')
@@ -88,12 +85,12 @@ class Pet(object):
     def statmod(self, stat, value):
         stat += value
         if stat > self.maxstat:
-            stat = maxstat
+            stat = self.maxstat
         if stat < 0:
-            stat = 0;
+            stat = 0
 
     def getHealth(self):
-        if self.health == 0:
+        if self.health <= 0:
             return "Dead"
         elif self.health/self.maxstat < .1:
             return "Sick"
@@ -108,7 +105,7 @@ class Pet(object):
             Game logic is stats calculated from other stats
         """
         # Logic items
-        # Before stat changes from time passing is calculated, we want to see how health the turtle is.
+        # Before stat changes from time passing are calculated, we want to see how healthy the turtle is.
         hapfit = self.happiness/self.maxstat
         hunfit = self.hunger/self.maxstat
         slpfit = self.sleep/self.maxstat
@@ -126,7 +123,7 @@ class Pet(object):
         if self.status == "Sleeping":
             self.statmod(self.sleep, 10)
             self.statmod(self.health, 2)
-            self.statmod(self.hunger, 1)
+            self.statmod(self.hunger, -1)
         else:
             self.statmod(self.sleep, -5)    # Averages to 12 hours of sleep a day.
 
@@ -154,8 +151,10 @@ class Pet(object):
         return self.respond(msg)
 
     def play(self):
-        if self.status == "sick" or self.status == "Dead":
+        if self.status == "Sick":
             msg = chooseResponse('sick') + " He doesn't want to play right now."
+        elif self.status == "Dead":
+            msg = "You try to play with {}, but he doesn't respond."
         elif self.hunger < 5:
             msg = "{} is too hungry to play right now!"
         else:
@@ -221,6 +220,10 @@ class Pet(object):
 pet = Pet("Bok Choy", SPRITES)
 print(pet.format())
 
+# # Discord Private Token Initialization
+# with open("token", 'r') as f:
+#     TOKEN = f.read()
+    
 # #Prefix
 # bot = commands.Bot(command_prefix='!', description="A bot for running a community pet keeping game. The app will keep track of a pet's hunger, happiness, and health as well as other stats.")
 
